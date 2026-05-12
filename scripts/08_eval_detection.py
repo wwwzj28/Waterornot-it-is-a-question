@@ -1,14 +1,28 @@
 """评价 YOLO11 检测效果。"""
 
+import argparse
 import json
+import os
+import sys
 from pathlib import Path
 import pandas as pd
 from ultralytics import YOLO
 
 from _paths import RAW_IMAGES_DIR, JSON_DIR, METRICS_DIR, YOLO_DIR
 
-# 置信度阈值
-CONF_THRESH = 0.5
+# 置信度阈值：CLI > 环境变量 > 默认 0.25
+def _resolve_conf():
+    p = argparse.ArgumentParser(add_help=False)
+    p.add_argument("--conf", type=float, default=None)
+    args, _ = p.parse_known_args()
+    if args.conf is not None:
+        return args.conf
+    env = os.environ.get("YOLO_CONF_THRESH")
+    if env:
+        return float(env)
+    return 0.25
+
+CONF_THRESH = _resolve_conf()
 
 # 测试集文件夹
 TEST_SPLIT = "test"
@@ -20,6 +34,7 @@ METRICS_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_CSV = METRICS_DIR / "yolo_detection_results.csv"
 
 VALID_LABELS = {"bottle_empty", "bottle_low", "bottle_medium", "bottle_high"}
+VALID_IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp"}
 
 
 def load_json(json_path: Path):
@@ -70,13 +85,16 @@ def compute_iou(box1, box2):
 
 def main():
     if not YOLO_MODEL_PATH.exists():
-        print(f"Error: YOLO model not found at {YOLO_MODEL_PATH}")
-        return
+        print(f"Error: YOLO model not found at {YOLO_MODEL_PATH}", file=sys.stderr)
+        sys.exit(1)
 
     model = YOLO(str(YOLO_MODEL_PATH))
 
     test_image_dir = RAW_IMAGES_DIR  # 可以根据 split_list.csv 或文件夹结构筛选测试集
-    test_images = [p for p in test_image_dir.iterdir() if p.is_file() and p.suffix.lower() in {".jpg", ".jpeg", ".png"}]
+    test_images = [
+        p for p in test_image_dir.iterdir()
+        if p.is_file() and p.suffix.lower() in VALID_IMAGE_SUFFIXES
+    ]
 
     records = []
 

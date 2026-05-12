@@ -56,13 +56,13 @@ STEPS: List[Step] = [
         name="03 LabelMe JSON 转 YOLO 标签",
         script="03_json_to_yolo.py",
         group="prepare",
-        required_before_run=["data/raw_images", "data/annotations_json", "data/split_list.csv"],
+        required_before_run=["data/raw_images", "data/annotations_json", "outputs/metrics/split_list.csv"],
     ),
     Step(
         name="05 使用人工框裁剪瓶体，生成 ResNet 分类数据",
         script="05_crop_bottle_by_label.py",
         group="prepare",
-        required_before_run=["data/raw_images", "data/annotations_json", "data/split_list.csv"],
+        required_before_run=["data/raw_images", "data/annotations_json", "outputs/metrics/split_list.csv"],
     ),
     Step(
         name="04 训练 YOLO11 检测模型",

@@ -26,7 +26,7 @@ YOLO_LABELS_DIR.mkdir(parents=True, exist_ok=True)
 # 读取划分 CSV
 split_csv = METRICS_DIR / "split_list.csv"
 split_dict = {}  # image_name -> split
-with open(split_csv, "r", encoding="utf-8") as f:
+with open(split_csv, "r", encoding="utf-8-sig") as f:
     reader = csv.DictReader(f)
     for row in reader:
         split_dict[row["image"]] = row["split"]

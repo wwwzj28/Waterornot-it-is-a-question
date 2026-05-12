@@ -21,7 +21,7 @@ BATCH_SIZE = 16
 NUM_CLASSES = 4
 CLASS_NAMES = ["empty", "low", "medium", "high"]
 
-MODEL_PATH = MODEL_DIR / "resnet50_best.pth"
+MODEL_PATH = MODEL_DIR / "resnet" / "resnet50_best.pth"
 
 METRICS_DIR.mkdir(parents=True, exist_ok=True)
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)

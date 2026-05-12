@@ -21,6 +21,8 @@ CLASS_MAP = {
     "high": "high",
 }
 
+VALID_IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp"}
+
 # padding 比例
 PADDING_RATIO = 0.05
 
@@ -28,7 +30,7 @@ PADDING_RATIO = 0.05
 split_csv = METRICS_DIR / "split_list.csv"
 split_dict = {}  # image_name -> split
 if split_csv.exists():
-    with open(split_csv, "r", encoding="utf-8") as f:
+    with open(split_csv, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             split_dict[row["image"]] = row["split"]
@@ -49,7 +51,10 @@ def crop_with_padding(img, bbox, padding_ratio=0.05):
     return img[y1_pad:y2_pad, x1_pad:x2_pad]
 
 def main():
-    image_files = list(RAW_IMAGES_DIR.glob("*.[jp][pn]g"))  # 支持 jpg/jpeg/png
+    image_files = [
+        p for p in RAW_IMAGES_DIR.iterdir()
+        if p.is_file() and p.suffix.lower() in VALID_IMAGE_SUFFIXES
+    ]
     total = 0
     stats = {"train": 0, "val": 0, "test": 0}
 

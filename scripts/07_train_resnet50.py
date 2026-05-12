@@ -32,7 +32,8 @@ MODEL_DIR.mkdir(parents=True, exist_ok=True)
 METRICS_DIR.mkdir(parents=True, exist_ok=True)
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-BEST_MODEL_PATH = MODEL_DIR / "resnet50_best.pth"
+BEST_MODEL_PATH = MODEL_DIR / "resnet" / "resnet50_best.pth"
+BEST_MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
 TRAIN_LOSS_CSV = METRICS_DIR / "resnet_train_loss.csv"
 TRAIN_ACC_CSV = METRICS_DIR / "resnet_train_acc.csv"
 
@@ -70,7 +71,7 @@ image_datasets = {
 
 dataloaders = {
     x: torch.utils.data.DataLoader(image_datasets[x], batch_size=BATCH_SIZE,
-                                   shuffle=True, num_workers=4)
+                                   shuffle=True, num_workers=0)
     for x in ["train", "val"]
 }
 
@@ -182,5 +183,6 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=NUM_EPOCHS):
 
 # ==== Run ====
 
-best_model = train_model(model, criterion, optimizer, exp_lr_scheduler, NUM_EPOCHS)
-print("\nFinal best model saved at:", BEST_MODEL_PATH)
+if __name__ == "__main__":
+    best_model = train_model(model, criterion, optimizer, exp_lr_scheduler, NUM_EPOCHS)
+    print("\nFinal best model saved at:", BEST_MODEL_PATH)

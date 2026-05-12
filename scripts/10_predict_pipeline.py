@@ -5,18 +5,19 @@ python scripts/10_predict_pipeline.py --images data/raw_images/test1.jpeg data/r
 """
 
 import argparse
+import csv
+import os
 from pathlib import Path
 import cv2
 import torch
 from torchvision import transforms, models
 from ultralytics import YOLO
 import pandas as pd
-from _paths import RAW_IMAGES_DIR, MODEL_DIR, CROPS_DIR, FIGURES_DIR, PRED_DIR
+from _paths import RAW_IMAGES_DIR, MODEL_DIR, CROPS_DIR, FIGURES_DIR, PRED_DIR, METRICS_DIR
 
 # ==== 配置 ====
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 INPUT_SIZE = 224
-CONF_THRESH = 0.5
 CLASS_NAMES = ["empty", "low", "medium", "high"]
 
 YOLO_MODEL_PATH = MODEL_DIR / "yolo/yolo11_best.pt"
@@ -37,9 +38,21 @@ resnet_transform = transforms.Compose([
 
 # ==== 命令行参数 ====
 parser = argparse.ArgumentParser(description="YOLO11 + ResNet50 end-to-end pipeline")
-parser.add_argument("--images", nargs="*", type=str,
-                    help="Path(s) to input image(s). If empty, process entire RAW_IMAGES_DIR")
+parser.add_argument("--images", nargs="*", type=str, default=None,
+                    help="Path(s) to input image(s). Overrides --split.")
+parser.add_argument("--split", type=str, default="test",
+                    choices=["train", "val", "test", "all"],
+                    help="Which split from split_list.csv to evaluate. Default: test")
+parser.add_argument("--conf", type=float, default=None,
+                    help="YOLO confidence threshold. Default: env YOLO_CONF_THRESH or 0.25")
 args = parser.parse_args()
+
+if args.conf is not None:
+    CONF_THRESH = args.conf
+elif os.environ.get("YOLO_CONF_THRESH"):
+    CONF_THRESH = float(os.environ["YOLO_CONF_THRESH"])
+else:
+    CONF_THRESH = 0.25
 
 
 # ==== 加载模型 ====
@@ -78,11 +91,26 @@ def classify_crop(crop_img):
 
 
 # ==== 图片列表 ====
+valid_suffixes = {".jpg", ".jpeg", ".png", ".bmp"}
+
 if args.images:
     image_files = [Path(p) for p in args.images]
 else:
-    valid_suffixes = {".jpg", ".jpeg", ".png", ".bmp"}
-    image_files = sorted([p for p in RAW_IMAGES_DIR.iterdir() if p.suffix.lower() in valid_suffixes])
+    split_list_csv = METRICS_DIR / "split_list.csv"
+    if args.split == "all" or not split_list_csv.exists():
+        if not split_list_csv.exists():
+            print(f"Warning: {split_list_csv} not found, falling back to all raw images")
+        image_files = sorted([p for p in RAW_IMAGES_DIR.iterdir()
+                              if p.suffix.lower() in valid_suffixes])
+    else:
+        target_names = set()
+        with open(split_list_csv, "r", encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                if row["split"] == args.split:
+                    target_names.add(row["image"])
+        image_files = sorted([p for p in RAW_IMAGES_DIR.iterdir()
+                              if p.suffix.lower() in valid_suffixes and p.name in target_names])
+        print(f"Running pipeline on {len(image_files)} images from split='{args.split}' (conf={CONF_THRESH})")
 
 if not image_files:
     print("No images found to process.")

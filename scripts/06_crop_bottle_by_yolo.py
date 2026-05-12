@@ -1,21 +1,35 @@
-"""根据 YOLO11 检测框裁剪瓶体图，用于端到端测试。"""
+"""根据 YOLO11 检测框裁剪瓶体图，用于端到端测试。
+
+划分严格沿用 02_split_dataset.py 生成的 outputs/metrics/split_list.csv。
+"""
 
 # scripts/06_crop_bottle_by_yolo.py
+import argparse
 import csv
-import random
+import os
 from pathlib import Path
 import cv2
 from ultralytics import YOLO
-from _paths import RAW_IMAGES_DIR, CLS_DIR, CROPS_DIR, PRED_DIR
-
-# 数据集划分比例
-SPLIT_RATIO = {"train": 0.7, "val": 0.15, "test": 0.15}
+from _paths import RAW_IMAGES_DIR, CLS_DIR, CROPS_DIR, PRED_DIR, METRICS_DIR
 
 # padding 比例
 PADDING_RATIO = 0.05
 
-# 置信度阈值
-CONF_THRESH = 0.5
+# 置信度阈值：CLI > 环境变量 > 默认 0.25
+def _resolve_conf():
+    p = argparse.ArgumentParser(add_help=False)
+    p.add_argument("--conf", type=float, default=None)
+    args, _ = p.parse_known_args()
+    if args.conf is not None:
+        return args.conf
+    env = os.environ.get("YOLO_CONF_THRESH")
+    if env:
+        return float(env)
+    return 0.25
+
+CONF_THRESH = _resolve_conf()
+
+VALID_IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp"}
 
 # 输出 CSV 文件
 PRED_DIR.mkdir(parents=True, exist_ok=True)
@@ -23,6 +37,21 @@ OUTPUT_CSV = PRED_DIR / "yolo_boxes.csv"
 
 # 裁剪保存路径
 CROPS_YOLO_DIR = CROPS_DIR / "yolo_crops"
+
+# 读取 02 步骤生成的 split_list.csv
+SPLIT_LIST_CSV = METRICS_DIR / "split_list.csv"
+def _load_split_dict():
+    d = {}
+    if not SPLIT_LIST_CSV.exists():
+        print(f"Warning: {SPLIT_LIST_CSV} not found. All images will default to 'train'.")
+        return d
+    with open(SPLIT_LIST_CSV, "r", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            d[row["image"]] = row["split"]
+    return d
+
+SPLIT_DICT = _load_split_dict()
 
 def crop_with_padding(img, bbox, padding_ratio=0.05):
     h, w = img.shape[:2]
@@ -51,7 +80,10 @@ def main():
         writer.writerow(["image", "xmin", "ymin", "xmax", "ymax", "conf", "split"])
 
         # 遍历图片
-        image_files = list(RAW_IMAGES_DIR.glob("*.[jp][pn]g"))
+        image_files = [
+            p for p in RAW_IMAGES_DIR.iterdir()
+            if p.is_file() and p.suffix.lower() in VALID_IMAGE_SUFFIXES
+        ]
         total = 0
         stats = {"train": 0, "val": 0, "test": 0}
 
@@ -75,14 +107,8 @@ def main():
             # 裁剪
             crop_img = crop_with_padding(img, [x1, y1, x2, y2], PADDING_RATIO)
 
-            # 划分 train/val/test
-            r = random.random()
-            if r < SPLIT_RATIO["train"]:
-                split = "train"
-            elif r < SPLIT_RATIO["train"] + SPLIT_RATIO["val"]:
-                split = "val"
-            else:
-                split = "test"
+            # 沿用 02 步骤的划分，避免数据泄露
+            split = SPLIT_DICT.get(img_path.name, "train")
 
             save_dir = CROPS_YOLO_DIR / split
             save_dir.mkdir(parents=True, exist_ok=True)
