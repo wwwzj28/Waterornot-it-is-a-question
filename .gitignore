@@ -1,0 +1,50 @@
+# ===== 虚拟环境 =====
+.venv/
+.venv_backup_*/
+venv/
+env/
+
+# ===== Python 缓存 =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== 数据集（通过微信/Release 单独分发） =====
+data/
+
+# ===== 模型权重（通过微信/Release 单独分发） =====
+models/
+*.pt
+*.pth
+yolo11n.pt
+yolo26n.pt
+
+# ===== 训练副产物（可重新生成） =====
+runs/
+outputs/
+
+# ===== 备份/打包目录 =====
+V1/
+V1.5/
+V2/
+*.rar
+*.zip
+*.7z
+
+# ===== IDE / OS =====
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ===== 临时文件 =====
+*.log
+*.tmp
+*.bak

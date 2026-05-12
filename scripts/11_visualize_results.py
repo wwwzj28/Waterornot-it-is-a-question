@@ -17,9 +17,20 @@ FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 # ===========================
 RAW_IMAGES_DIR = Path("data/raw_images")
 ANNOTATIONS_JSON_DIR = Path("data/annotations_json")
+VALID_IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp"}
+
+
+def list_images(dir_path: Path, recursive: bool = False):
+    if not dir_path.exists():
+        return []
+    iterator = dir_path.rglob("*") if recursive else dir_path.iterdir()
+    return [
+        p for p in iterator
+        if p.is_file() and p.suffix.lower() in VALID_IMAGE_SUFFIXES
+    ]
 
 def show_sample_images(num_samples=5):
-    image_files = list(RAW_IMAGES_DIR.glob("*.[jp][pn]g"))
+    image_files = list_images(RAW_IMAGES_DIR)
     image_files = random.sample(image_files, min(num_samples, len(image_files)))
 
     plt.figure(figsize=(15, 3 * len(image_files)))
@@ -60,7 +71,7 @@ def show_sample_images(num_samples=5):
 YOLO_PRED_DIR = Path("outputs/figures")  # 之前pipeline保存的可视化图像
 
 def show_yolo_detection_samples(num_samples=5):
-    yolo_images = list(YOLO_PRED_DIR.glob("*.[jp][pn]g"))
+    yolo_images = list_images(YOLO_PRED_DIR)
     yolo_images = random.sample(yolo_images, min(num_samples, len(yolo_images)))
 
     plt.figure(figsize=(15, 3 * len(yolo_images)))
@@ -81,18 +92,20 @@ def show_yolo_detection_samples(num_samples=5):
 # ===========================
 # 3. 裁剪图示例
 # ===========================
-CROPS_YOLO_DIR = CROPS_DIR / "pipeline_crops"
-CROPS_LABEL_DIR = CROPS_DIR / "yolo_crops"  # 人工裁剪 + YOLO裁剪可视化
+CROPS_YOLO_DIR = CROPS_DIR / "yolo_crops"  # 06 生成的 YOLO 框裁剪图（按 split 分子目录）
 
 def show_crop_samples(num_samples=5):
-    crop_images = list(CROPS_YOLO_DIR.glob("*.[jp][pn]g"))
+    crop_images = list_images(CROPS_YOLO_DIR, recursive=True)
+    if not crop_images:
+        print(f"No crop images found under {CROPS_YOLO_DIR}, skipping crop_samples figure.")
+        return
     crop_images = random.sample(crop_images, min(num_samples, len(crop_images)))
 
     plt.figure(figsize=(15, 3 * len(crop_images)))
     for idx, img_path in enumerate(crop_images, 1):
         img = cv2.imread(str(img_path))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        plt.subplot(num_samples,1,idx)
+        plt.subplot(len(crop_images), 1, idx)
         plt.imshow(img)
         plt.axis("off")
 
