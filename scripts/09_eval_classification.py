@@ -2,7 +2,8 @@
 
 import torch
 import torch.nn as nn
-from torchvision import datasets, models, transforms
+from torchvision import datasets, transforms
+from torchvision.models import resnet50
 from torch.utils.data import DataLoader
 
 import pandas as pd
@@ -15,11 +16,12 @@ from _paths import CLS_DIR, MODEL_DIR, METRICS_DIR, FIGURES_DIR
 
 # ==== 配置 ====
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-INPUT_SIZE = 224
+# 与训练保持一致：竖长形 (H, W)
+INPUT_H = 384
+INPUT_W = 192
 BATCH_SIZE = 16
 
 NUM_CLASSES = 4
-CLASS_NAMES = ["empty", "low", "medium", "high"]
 
 MODEL_PATH = MODEL_DIR / "resnet" / "resnet50_best.pth"
 
@@ -32,7 +34,7 @@ PREDICTIONS_CSV = METRICS_DIR / "resnet_test_predictions.csv"
 
 # ==== 数据预处理 ====
 data_transforms = transforms.Compose([
-    transforms.Resize((INPUT_SIZE, INPUT_SIZE)),
+    transforms.Resize((INPUT_H, INPUT_W)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406],
                          [0.229, 0.224, 0.225])
@@ -41,8 +43,12 @@ data_transforms = transforms.Compose([
 test_dataset = datasets.ImageFolder(root=str(CLS_DIR / "test"), transform=data_transforms)
 test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
+# 关键：用 ImageFolder 的实际索引顺序（字母序），训练时也是这套，必须对齐
+CLASS_NAMES = test_dataset.classes
+print("Class index order:", CLASS_NAMES)
+
 # ==== 模型 ====
-model = models.resnet50(pretrained=False)
+model = resnet50(weights=None)
 num_ftrs = model.fc.in_features
 model.fc = nn.Linear(num_ftrs, NUM_CLASSES)
 model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))

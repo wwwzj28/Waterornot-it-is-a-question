@@ -10,15 +10,19 @@ import os
 from pathlib import Path
 import cv2
 import torch
-from torchvision import transforms, models
+from torchvision import transforms
+from torchvision.models import resnet50
 from ultralytics import YOLO
 import pandas as pd
-from _paths import RAW_IMAGES_DIR, MODEL_DIR, CROPS_DIR, FIGURES_DIR, PRED_DIR, METRICS_DIR
+from _paths import RAW_IMAGES_DIR, MODEL_DIR, CROPS_DIR, FIGURES_DIR, PRED_DIR, METRICS_DIR, CLS_DIR
 
 # ==== 配置 ====
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-INPUT_SIZE = 224
-CLASS_NAMES = ["empty", "low", "medium", "high"]
+# 与训练保持一致：竖长形 (H, W)
+INPUT_H = 384
+INPUT_W = 192
+# 类名按 ImageFolder 字母序，与训练时一致
+CLASS_NAMES = sorted([d.name for d in (CLS_DIR / "train").iterdir() if d.is_dir()])
 
 YOLO_MODEL_PATH = MODEL_DIR / "yolo/yolo11_best.pt"
 RESNET_MODEL_PATH = MODEL_DIR / "resnet/resnet50_best.pth"
@@ -29,7 +33,7 @@ CROPS_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_CSV = PRED_DIR / "pipeline_predictions.csv"
 
 resnet_transform = transforms.Compose([
-    transforms.Resize((INPUT_SIZE, INPUT_SIZE)),
+    transforms.Resize((INPUT_H, INPUT_W)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406],
                          [0.229, 0.224, 0.225])
@@ -58,7 +62,7 @@ else:
 # ==== 加载模型 ====
 yolo_model = YOLO(str(YOLO_MODEL_PATH))
 
-resnet_model = models.resnet50(pretrained=False)
+resnet_model = resnet50(weights=None)
 num_ftrs = resnet_model.fc.in_features
 resnet_model.fc = torch.nn.Linear(num_ftrs, len(CLASS_NAMES))
 resnet_model.load_state_dict(torch.load(RESNET_MODEL_PATH, map_location=DEVICE))

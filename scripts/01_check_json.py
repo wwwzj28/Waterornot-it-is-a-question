@@ -28,7 +28,8 @@ def check_shape(shape, img_w, img_h):
     return True, ""
 
 def main():
-    image_files = list(RAW_IMAGES_DIR.glob("*.[jp][pn]g"))  # 支持 jpg/jpeg/png
+    exts = {".jpg", ".jpeg", ".png", ".webp"}
+    image_files = [p for p in RAW_IMAGES_DIR.iterdir() if p.suffix.lower() in exts]
     records = []
 
     for img_path in sorted(image_files):

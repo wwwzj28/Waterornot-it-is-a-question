@@ -40,7 +40,7 @@ import argparse
 from collections import defaultdict
 from pathlib import Path
 
-from _paths import RAW_IMAGES_DIR, JSON_DIR, METRICS_DIR
+from _paths import RAW_IMAGES_DIR, JSON_DIR, METRICS_DIR, DATA_DIR
 
 
 # 允许的图片后缀
@@ -62,6 +62,24 @@ CLASS_MAP = {
 DEFAULT_TRAIN_RATIO = 0.70
 DEFAULT_VAL_RATIO = 0.15
 DEFAULT_TEST_RATIO = 0.15
+
+RELABEL_CSV = DATA_DIR / "relabel.csv"
+
+
+def load_relabel_overrides():
+    """读 relabel.csv -> {image_name: new_label}; new_label 可以是 empty/low/medium/high/invalid。
+
+    没有 relabel.csv 时返回空 dict（纯靠 LabelMe 原始 label 切分）。
+    """
+    if not RELABEL_CSV.exists():
+        return {}
+    out = {}
+    with RELABEL_CSV.open("r", encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            v = (row.get("new_label", "") or "").strip().lower()
+            if v:
+                out[row["image"]] = v
+    return out
 
 
 def get_image_files(image_dir: Path):
@@ -115,9 +133,14 @@ def extract_label_from_labelme(data_json: dict, json_path: Path):
     )
 
 
-def collect_records():
+def collect_records(use_relabel: bool = True):
     """
     收集全部有效样本。
+
+    如果 use_relabel=True 且 data/relabel.csv 存在：
+      - relabel.csv 里 new_label==invalid 的样本直接跳过
+      - relabel.csv 里 new_label in {empty,low,medium,high} 的样本以 new_label 为准
+      - 其余样本走 LabelMe 原始 label
 
     返回：
     records_by_class = {
@@ -127,10 +150,17 @@ def collect_records():
         ...
     }
     """
+    overrides = load_relabel_overrides() if use_relabel else {}
+    if overrides:
+        n_invalid = sum(1 for v in overrides.values() if v == "invalid")
+        n_override = sum(1 for v in overrides.values() if v in CLASS_MAP)
+        print(f"[relabel] loaded {len(overrides)} entries  (invalid={n_invalid}, override={n_override})")
+
     image_files = get_image_files(RAW_IMAGES_DIR)
 
     records_by_class = defaultdict(list)
     error_records = []
+    skipped_invalid = 0
 
     for img_path in image_files:
         json_path = JSON_DIR / f"{img_path.stem}.json"
@@ -143,10 +173,29 @@ def collect_records():
             })
             continue
 
+        # invalid 优先：直接排除
+        ov = overrides.get(img_path.name, "")
+        if ov == "invalid":
+            skipped_invalid += 1
+            continue
+
         try:
             data_json = load_json(json_path)
 
-            label, raw_label = extract_label_from_labelme(data_json, json_path)
+            # 拿 raw_label 用于报告，label 优先取 overrides
+            try:
+                label_from_json, raw_label = extract_label_from_labelme(data_json, json_path)
+            except Exception as e:
+                label_from_json, raw_label = None, ""
+
+            if ov in CLASS_MAP:
+                label = CLASS_MAP[ov]
+                if not raw_label:
+                    raw_label = ov
+            else:
+                if label_from_json is None:
+                    raise ValueError(f"no valid label in JSON and no relabel override for {img_path.name}")
+                label = label_from_json
 
             # 可选检查：JSON 里的 imagePath 和当前图片文件名是否一致
             image_path_in_json = data_json.get("imagePath", "")
@@ -156,7 +205,6 @@ def collect_records():
                     "json": json_path.name,
                     "error": f"imagePath mismatch: {image_path_in_json}",
                 })
-                # 这里不跳过，只记录提醒。因为有些情况下 imagePath 可能是旧路径。
 
             record = {
                 "image": img_path.name,
@@ -173,6 +221,9 @@ def collect_records():
                 "json": json_path.name,
                 "error": str(e),
             })
+
+    if skipped_invalid:
+        print(f"[relabel] skipped {skipped_invalid} samples marked invalid")
 
     return records_by_class, error_records
 
@@ -399,6 +450,12 @@ def parse_args():
         help="Random seed. Default: 42",
     )
 
+    parser.add_argument(
+        "--ignore-relabel",
+        action="store_true",
+        help="Ignore data/relabel.csv even if it exists; split purely from LabelMe labels.",
+    )
+
     return parser.parse_args()
 
 
@@ -418,7 +475,7 @@ def main():
     split_stats_path = METRICS_DIR / "split_stats.csv"
     error_report_path = METRICS_DIR / "split_errors.csv"
 
-    records_by_class, error_records = collect_records()
+    records_by_class, error_records = collect_records(use_relabel=not args.ignore_relabel)
 
     split_records = split_dataset(
         records_by_class=records_by_class,

@@ -11,6 +11,7 @@ YOLO_IMAGES_DIR = YOLO_DIR / "images"
 YOLO_LABELS_DIR = YOLO_DIR / "labels"
 
 CLS_DIR = DATA_DIR / "resnet_cls"
+CLS_DIR_V2 = DATA_DIR / "resnet_cls_v2"
 
 CONFIG_DIR = ROOT / "configs"
 MODEL_DIR = ROOT / "models"
