@@ -1,0 +1,38 @@
+E:\Users\a\Desktop\数模\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\scripts\16_eval_two_stage.py:86: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  m.load_state_dict(torch.load(path, map_location=DEVICE))
+Saved per-image predictions: E:\Users\a\Desktop\数模\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\two_stage_test_predictions_efficientnet_v2_s_480x240_seed1.csv
+
+=== End-to-end 4-class test acc: 0.7852 (106/135) ===
+
+Confusion (rows=true, cols=pred):
+                empty      low   medium     high
+       empty      45        0        1        3
+         low       4        6        4        0
+      medium       3        0       12        6
+        high       5        0        3       43
+
+=== Q1 (empty vs not) test acc: 0.8815 ===
+[[45, 4], [12, 74]]
+
+=== Q2 (low/medium/high on true-non-empty subset) test acc: 0.7093 (61/86) ===
+Confusion incl. 'empty' (Stage A 把它判 empty 时):
+                  low   medium     high    empty
+         low       6        4        0        4
+      medium       0       12        6        3
+        high       0        3       43        5
+
+=== Per-class report (4-class) ===
+              precision    recall  f1-score   support
+
+       empty      0.789     0.918     0.849        49
+         low      1.000     0.429     0.600        14
+      medium      0.600     0.571     0.585        21
+        high      0.827     0.843     0.835        51
+
+    accuracy                              0.785       135
+   macro avg      0.804     0.690     0.717       135
+weighted avg      0.796     0.785     0.777       135
+
+
+Saved report: E:\Users\a\Desktop\数模\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\two_stage_test_report_efficientnet_v2_s_480x240_seed1.txt
+Saved confusion matrix: E:\Users\a\Desktop\数模\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\figures\two_stage_confusion_matrix_efficientnet_v2_s_480x240_seed1.png

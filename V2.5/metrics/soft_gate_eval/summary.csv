@@ -1,0 +1,5 @@
+﻿split,method,acc,q1,q2,macro_f1,weighted_f1,params
+val,hard,0.8385,0.9615,0.8049,0.7574,0.8451,
+val,soft_best_on_val,0.8615,0.9692,0.8293,0.7985,0.863,"{'empty_scale': 0.85, 'nonempty_scale': 1.0, 'low_bias': 1.0, 'medium_bias': 0.85, 'high_bias': 1.15}"
+test,hard,0.7852,0.8815,0.7442,0.6963,0.7792,
+test,soft_best_on_val,0.7852,0.8889,0.7209,0.6927,0.7737,"{'empty_scale': 0.85, 'nonempty_scale': 1.0, 'low_bias': 1.0, 'medium_bias': 0.85, 'high_bias': 1.15}"

@@ -1,0 +1,5 @@
+﻿split,empty,low,medium,high,total
+train,224,60,95,234,613
+val,48,13,20,50,131
+test,49,14,22,51,136
+total,321,87,137,335,880

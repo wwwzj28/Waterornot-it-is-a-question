@@ -1,0 +1,21 @@
+
+========== 02 split_dataset ==========
+Using frozen final split from outputs/metrics/final_split_list.csv
+
+========== 14 apply_relabel ==========
+$ D:\CondaData\envs\water-v2\python.exe scripts/14_apply_relabel.py
+=== Wrote v2 dataset to E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\data\resnet_cls_v2 ===
+train  | empty=224  low= 58  medium= 93  high=234  | total=609
+val    | empty= 48  low= 12  medium= 20  high= 50  | total=130
+test   | empty= 49  low= 14  medium= 21  high= 51  | total=135
+
+Total valid samples: 874
+Label sources: {'relabel': 379, 'json_fallback': 495}
+Skipped: {'invalid': 123}
+
+Wrote: E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\split_stats_v2.csv
+Wrote: E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\split_list_v2.csv
+
+[14 apply_relabel] exit=0  elapsed=7.0s  log=E:\Users\a\Desktop\ÊýÄ£\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\logs\run_all_v2\14_apply.log
+
+Skipped train + eval (--skip-train).

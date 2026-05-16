@@ -1,0 +1,5 @@
+﻿split,method,acc,q1,q2,macro_f1,weighted_f1,empty_recall,low_precision,low_recall,low_f1,medium_recall,high_recall,params
+val,baseline,0.8769,0.9769,0.8415,0.8207,0.8761,0.9375,1.0,0.5,0.6667,0.9,0.9,"{'empty_bias': 1.0, 'nonempty_bias': 1.0, 'low_bias': 1.0, 'medium_bias': 1.0, 'high_bias': 1.0}"
+val,calibrated_best_on_val,0.8846,0.9769,0.8537,0.8298,0.8822,0.9375,1.0,0.5,0.6667,0.9,0.92,"{'empty_bias': 1.0, 'nonempty_bias': 0.95, 'low_bias': 1.0, 'medium_bias': 0.85, 'high_bias': 1.0}"
+test,baseline,0.8444,0.9407,0.8023,0.785,0.8415,0.9184,0.7778,0.5,0.6087,0.8095,0.8824,"{'empty_bias': 1.0, 'nonempty_bias': 1.0, 'low_bias': 1.0, 'medium_bias': 1.0, 'high_bias': 1.0}"
+test,calibrated_best_on_val,0.8444,0.9407,0.8023,0.785,0.8415,0.9184,0.7778,0.5,0.6087,0.8095,0.8824,"{'empty_bias': 1.0, 'nonempty_bias': 0.95, 'low_bias': 1.0, 'medium_bias': 0.85, 'high_bias': 1.0}"

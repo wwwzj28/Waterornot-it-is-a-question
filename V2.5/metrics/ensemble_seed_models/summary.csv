@@ -1,0 +1,5 @@
+﻿split,method,acc,q1,q2,macro_f1,weighted_f1,empty_precision,empty_recall,empty_f1,empty_support,low_precision,low_recall,low_f1,low_support,medium_precision,medium_recall,medium_f1,medium_support,high_precision,high_recall,high_f1,high_support
+val,avg_hard_gate,0.8308,0.9538,0.8049,0.7719,0.8383,1.0,0.875,0.9333,48,0.75,0.5,0.6,12,0.5429,0.95,0.6909,20,0.9111,0.82,0.8632,50
+val,avg_product_gate,0.8231,0.9385,0.7683,0.7684,0.824,0.9167,0.9167,0.9167,48,0.75,0.5,0.6,12,0.5938,0.95,0.7308,20,0.9048,0.76,0.8261,50
+test,avg_hard_gate,0.7778,0.8889,0.7326,0.6718,0.7659,0.84,0.8571,0.8485,49,0.75,0.2143,0.3333,14,0.5484,0.8095,0.6538,21,0.86,0.8431,0.8515,51
+test,avg_product_gate,0.7704,0.8815,0.7093,0.6631,0.7587,0.8113,0.8776,0.8431,49,0.75,0.2143,0.3333,14,0.5333,0.7619,0.6275,21,0.875,0.8235,0.8485,51

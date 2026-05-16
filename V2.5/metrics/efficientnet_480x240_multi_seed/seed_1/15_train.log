@@ -1,0 +1,168 @@
+seed = 1
+backbone = efficientnet_v2_s
+input_size = 480x240
+
+========== StageA | label_map={'empty': 0, 'low': 1, 'medium': 1, 'high': 1} ==========
+num_classes=2 | train n=609 | val n=130
+class counts (idx -> n):  {0: 224, 1: 385}
+class weights (idx -> w): {0: 1.359, 1: 0.791}
+
+-- StageA | warmup (fc only) --
+[StageA.warmup] ep  1/8  train loss=0.696 acc=0.563  val acc=0.638  best=0.638  lr=1.0e-04
+[StageA.warmup] ep  2/8  train loss=0.661 acc=0.649  val acc=0.669  best=0.669  lr=1.0e-04
+[StageA.warmup] ep  3/8  train loss=0.639 acc=0.708  val acc=0.715  best=0.715  lr=1.0e-04
+[StageA.warmup] ep  4/8  train loss=0.617 acc=0.718  val acc=0.731  best=0.731  lr=1.0e-04
+[StageA.warmup] ep  5/8  train loss=0.600 acc=0.727  val acc=0.692  best=0.731  lr=1.0e-04
+[StageA.warmup] ep  6/8  train loss=0.579 acc=0.739  val acc=0.739  best=0.738  lr=1.0e-04
+[StageA.warmup] ep  7/8  train loss=0.568 acc=0.749  val acc=0.739  best=0.738  lr=1.0e-04
+[StageA.warmup] ep  8/8  train loss=0.559 acc=0.773  val acc=0.739  best=0.738  lr=1.0e-04
+
+-- StageA | finetune (all params) --
+[StageA.finetune] ep  1/60  train loss=0.517 acc=0.813  val acc=0.792  best=0.792  lr=1.0e-05
+[StageA.finetune] ep  2/60  train loss=0.473 acc=0.839  val acc=0.808  best=0.808  lr=1.0e-05
+[StageA.finetune] ep  3/60  train loss=0.413 acc=0.872  val acc=0.831  best=0.831  lr=1.0e-05
+[StageA.finetune] ep  4/60  train loss=0.374 acc=0.892  val acc=0.846  best=0.846  lr=9.9e-06
+[StageA.finetune] ep  5/60  train loss=0.294 acc=0.926  val acc=0.862  best=0.862  lr=9.9e-06
+[StageA.finetune] ep  6/60  train loss=0.250 acc=0.952  val acc=0.892  best=0.892  lr=9.8e-06
+[StageA.finetune] ep  7/60  train loss=0.198 acc=0.959  val acc=0.885  best=0.892  lr=9.8e-06
+[StageA.finetune] ep  8/60  train loss=0.190 acc=0.956  val acc=0.908  best=0.908  lr=9.7e-06
+[StageA.finetune] ep  9/60  train loss=0.152 acc=0.967  val acc=0.900  best=0.908  lr=9.6e-06
+[StageA.finetune] ep 10/60  train loss=0.152 acc=0.966  val acc=0.923  best=0.923  lr=9.5e-06
+[StageA.finetune] ep 11/60  train loss=0.111 acc=0.980  val acc=0.931  best=0.931  lr=9.3e-06
+[StageA.finetune] ep 12/60  train loss=0.097 acc=0.977  val acc=0.923  best=0.931  lr=9.2e-06
+[StageA.finetune] ep 13/60  train loss=0.083 acc=0.989  val acc=0.946  best=0.946  lr=9.0e-06
+[StageA.finetune] ep 14/60  train loss=0.081 acc=0.979  val acc=0.946  best=0.946  lr=8.9e-06
+[StageA.finetune] ep 15/60  train loss=0.080 acc=0.982  val acc=0.931  best=0.946  lr=8.7e-06
+[StageA.finetune] ep 16/60  train loss=0.068 acc=0.985  val acc=0.923  best=0.946  lr=8.5e-06
+[StageA.finetune] ep 17/60  train loss=0.063 acc=0.985  val acc=0.939  best=0.946  lr=8.3e-06
+[StageA.finetune] ep 18/60  train loss=0.069 acc=0.980  val acc=0.923  best=0.946  lr=8.1e-06
+[StageA.finetune] ep 19/60  train loss=0.045 acc=0.995  val acc=0.931  best=0.946  lr=7.9e-06
+[StageA.finetune] ep 20/60  train loss=0.038 acc=0.998  val acc=0.931  best=0.946  lr=7.7e-06
+[StageA.finetune] ep 21/60  train loss=0.059 acc=0.990  val acc=0.931  best=0.946  lr=7.5e-06
+[StageA.finetune] ep 22/60  train loss=0.038 acc=0.997  val acc=0.939  best=0.946  lr=7.3e-06
+[StageA.finetune] ep 23/60  train loss=0.034 acc=0.997  val acc=0.939  best=0.946  lr=7.0e-06
+[StageA.finetune] ep 24/60  train loss=0.040 acc=0.992  val acc=0.954  best=0.954  lr=6.8e-06
+[StageA.finetune] ep 25/60  train loss=0.042 acc=0.990  val acc=0.946  best=0.954  lr=6.5e-06
+[StageA.finetune] ep 26/60  train loss=0.027 acc=0.998  val acc=0.946  best=0.954  lr=6.3e-06
+[StageA.finetune] ep 27/60  train loss=0.040 acc=0.995  val acc=0.946  best=0.954  lr=6.0e-06
+[StageA.finetune] ep 28/60  train loss=0.039 acc=0.990  val acc=0.946  best=0.954  lr=5.8e-06
+[StageA.finetune] ep 29/60  train loss=0.037 acc=0.993  val acc=0.954  best=0.954  lr=5.5e-06
+[StageA.finetune] ep 30/60  train loss=0.025 acc=0.998  val acc=0.946  best=0.954  lr=5.3e-06
+[StageA.finetune] ep 31/60  train loss=0.032 acc=0.993  val acc=0.931  best=0.954  lr=5.0e-06
+[StageA.finetune] ep 32/60  train loss=0.028 acc=0.997  val acc=0.939  best=0.954  lr=4.7e-06
+[StageA.finetune] ep 33/60  train loss=0.028 acc=0.997  val acc=0.946  best=0.954  lr=4.5e-06
+[StageA.finetune] ep 34/60  train loss=0.023 acc=0.998  val acc=0.939  best=0.954  lr=4.2e-06
+[StageA.finetune] ep 35/60  train loss=0.018 acc=0.998  val acc=0.946  best=0.954  lr=4.0e-06
+[StageA.finetune] ep 36/60  train loss=0.026 acc=0.997  val acc=0.946  best=0.954  lr=3.7e-06
+[StageA.finetune] ep 37/60  train loss=0.015 acc=0.998  val acc=0.946  best=0.954  lr=3.5e-06
+[StageA.finetune] ep 38/60  train loss=0.021 acc=0.998  val acc=0.946  best=0.954  lr=3.2e-06
+[StageA.finetune] ep 39/60  train loss=0.021 acc=0.995  val acc=0.946  best=0.954  lr=3.0e-06
+[StageA.finetune] ep 40/60  train loss=0.018 acc=0.997  val acc=0.954  best=0.954  lr=2.7e-06
+[StageA.finetune] ep 41/60  train loss=0.017 acc=1.000  val acc=0.939  best=0.954  lr=2.5e-06
+[StageA.finetune] ep 42/60  train loss=0.027 acc=0.993  val acc=0.954  best=0.954  lr=2.3e-06
+[StageA.finetune] ep 43/60  train loss=0.017 acc=1.000  val acc=0.939  best=0.954  lr=2.1e-06
+[StageA.finetune] ep 44/60  train loss=0.020 acc=0.998  val acc=0.946  best=0.954  lr=1.9e-06
+[StageA.finetune] ep 45/60  train loss=0.019 acc=0.997  val acc=0.946  best=0.954  lr=1.7e-06
+[StageA.finetune] ep 46/60  train loss=0.011 acc=1.000  val acc=0.939  best=0.954  lr=1.5e-06
+[StageA.finetune] ep 47/60  train loss=0.024 acc=0.993  val acc=0.946  best=0.954  lr=1.3e-06
+[StageA.finetune] ep 48/60  train loss=0.015 acc=0.997  val acc=0.939  best=0.954  lr=1.1e-06
+[StageA.finetune] ep 49/60  train loss=0.024 acc=0.995  val acc=0.946  best=0.954  lr=9.5e-07
+[StageA.finetune] ep 50/60  train loss=0.020 acc=0.998  val acc=0.931  best=0.954  lr=8.1e-07
+[StageA.finetune] ep 51/60  train loss=0.016 acc=0.998  val acc=0.954  best=0.954  lr=6.7e-07
+[StageA.finetune] ep 52/60  train loss=0.018 acc=0.998  val acc=0.954  best=0.954  lr=5.4e-07
+[StageA.finetune] ep 53/60  train loss=0.014 acc=1.000  val acc=0.939  best=0.954  lr=4.3e-07
+[StageA.finetune] ep 54/60  train loss=0.025 acc=0.993  val acc=0.946  best=0.954  lr=3.3e-07
+[StageA.finetune] ep 55/60  train loss=0.019 acc=0.997  val acc=0.946  best=0.954  lr=2.4e-07
+[StageA.finetune] ep 56/60  train loss=0.016 acc=1.000  val acc=0.954  best=0.954  lr=1.7e-07
+[StageA.finetune] ep 57/60  train loss=0.018 acc=0.997  val acc=0.946  best=0.954  lr=1.1e-07
+[StageA.finetune] ep 58/60  train loss=0.014 acc=1.000  val acc=0.946  best=0.954  lr=6.2e-08
+[StageA.finetune] ep 59/60  train loss=0.017 acc=0.998  val acc=0.946  best=0.954  lr=2.7e-08
+[StageA.finetune] ep 60/60  train loss=0.016 acc=0.995  val acc=0.946  best=0.954  lr=6.9e-09
+
+[StageA] best val acc = 0.9538  ->  E:\Users\a\Desktop\数模\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\models\efficientnet_v2_s_480x240_seed1\two_stage\stage_a_empty_vs_not.pth
+
+========== StageB | label_map={'low': 0, 'medium': 1, 'high': 2} ==========
+num_classes=3 | train n=385 | val n=82
+train sampler: WeightedRandomSampler
+train augmentation: Stage B light affine/crop
+class counts (idx -> n):  {0: 58, 1: 93, 2: 234}
+class weights (idx -> w): {0: 2.213, 1: 1.38, 2: 0.548}
+
+-- StageB | warmup (fc only) --
+[StageB.warmup] ep  1/8  train loss=1.041 acc=0.403  val acc=0.232  best=0.232  lr=1.0e-04
+[StageB.warmup] ep  2/8  train loss=1.005 acc=0.320  val acc=0.232  best=0.232  lr=1.0e-04
+[StageB.warmup] ep  3/8  train loss=0.954 acc=0.390  val acc=0.207  best=0.232  lr=1.0e-04
+[StageB.warmup] ep  4/8  train loss=0.943 acc=0.364  val acc=0.244  best=0.244  lr=1.0e-04
+[StageB.warmup] ep  5/8  train loss=0.931 acc=0.382  val acc=0.220  best=0.244  lr=1.0e-04
+[StageB.warmup] ep  6/8  train loss=0.898 acc=0.369  val acc=0.207  best=0.244  lr=1.0e-04
+[StageB.warmup] ep  7/8  train loss=0.912 acc=0.366  val acc=0.244  best=0.244  lr=1.0e-04
+[StageB.warmup] ep  8/8  train loss=0.924 acc=0.343  val acc=0.220  best=0.244  lr=1.0e-04
+
+-- StageB | finetune (all params) --
+[StageB.finetune] ep  1/60  train loss=0.887 acc=0.379  val acc=0.329  best=0.329  lr=1.0e-05
+[StageB.finetune] ep  2/60  train loss=0.844 acc=0.444  val acc=0.427  best=0.427  lr=1.0e-05
+[StageB.finetune] ep  3/60  train loss=0.801 acc=0.514  val acc=0.476  best=0.476  lr=1.0e-05
+[StageB.finetune] ep  4/60  train loss=0.815 acc=0.491  val acc=0.561  best=0.561  lr=9.9e-06
+[StageB.finetune] ep  5/60  train loss=0.775 acc=0.535  val acc=0.598  best=0.598  lr=9.9e-06
+[StageB.finetune] ep  6/60  train loss=0.724 acc=0.616  val acc=0.610  best=0.610  lr=9.8e-06
+[StageB.finetune] ep  7/60  train loss=0.719 acc=0.616  val acc=0.634  best=0.634  lr=9.8e-06
+[StageB.finetune] ep  8/60  train loss=0.675 acc=0.696  val acc=0.756  best=0.756  lr=9.7e-06
+[StageB.finetune] ep  9/60  train loss=0.643 acc=0.727  val acc=0.756  best=0.756  lr=9.6e-06
+[StageB.finetune] ep 10/60  train loss=0.615 acc=0.733  val acc=0.732  best=0.756  lr=9.5e-06
+[StageB.finetune] ep 11/60  train loss=0.572 acc=0.805  val acc=0.768  best=0.768  lr=9.3e-06
+[StageB.finetune] ep 12/60  train loss=0.529 acc=0.826  val acc=0.744  best=0.768  lr=9.2e-06
+[StageB.finetune] ep 13/60  train loss=0.513 acc=0.810  val acc=0.756  best=0.768  lr=9.0e-06
+[StageB.finetune] ep 14/60  train loss=0.483 acc=0.816  val acc=0.817  best=0.817  lr=8.9e-06
+[StageB.finetune] ep 15/60  train loss=0.460 acc=0.847  val acc=0.805  best=0.817  lr=8.7e-06
+[StageB.finetune] ep 16/60  train loss=0.401 acc=0.912  val acc=0.756  best=0.817  lr=8.5e-06
+[StageB.finetune] ep 17/60  train loss=0.367 acc=0.932  val acc=0.768  best=0.817  lr=8.3e-06
+[StageB.finetune] ep 18/60  train loss=0.356 acc=0.901  val acc=0.793  best=0.817  lr=8.1e-06
+[StageB.finetune] ep 19/60  train loss=0.310 acc=0.946  val acc=0.793  best=0.817  lr=7.9e-06
+[StageB.finetune] ep 20/60  train loss=0.323 acc=0.925  val acc=0.817  best=0.817  lr=7.7e-06
+[StageB.finetune] ep 21/60  train loss=0.286 acc=0.946  val acc=0.768  best=0.817  lr=7.5e-06
+[StageB.finetune] ep 22/60  train loss=0.262 acc=0.948  val acc=0.780  best=0.817  lr=7.3e-06
+[StageB.finetune] ep 23/60  train loss=0.261 acc=0.925  val acc=0.780  best=0.817  lr=7.0e-06
+[StageB.finetune] ep 24/60  train loss=0.236 acc=0.943  val acc=0.780  best=0.817  lr=6.8e-06
+[StageB.finetune] ep 25/60  train loss=0.238 acc=0.946  val acc=0.805  best=0.817  lr=6.5e-06
+[StageB.finetune] ep 26/60  train loss=0.209 acc=0.956  val acc=0.805  best=0.817  lr=6.3e-06
+[StageB.finetune] ep 27/60  train loss=0.202 acc=0.971  val acc=0.793  best=0.817  lr=6.0e-06
+[StageB.finetune] ep 28/60  train loss=0.203 acc=0.953  val acc=0.780  best=0.817  lr=5.8e-06
+[StageB.finetune] ep 29/60  train loss=0.190 acc=0.951  val acc=0.768  best=0.817  lr=5.5e-06
+[StageB.finetune] ep 30/60  train loss=0.180 acc=0.966  val acc=0.817  best=0.817  lr=5.3e-06
+[StageB.finetune] ep 31/60  train loss=0.179 acc=0.969  val acc=0.793  best=0.817  lr=5.0e-06
+[StageB.finetune] ep 32/60  train loss=0.203 acc=0.946  val acc=0.793  best=0.817  lr=4.7e-06
+[StageB.finetune] ep 33/60  train loss=0.155 acc=0.979  val acc=0.744  best=0.817  lr=4.5e-06
+[StageB.finetune] ep 34/60  train loss=0.185 acc=0.943  val acc=0.805  best=0.817  lr=4.2e-06
+[StageB.finetune] ep 35/60  train loss=0.183 acc=0.958  val acc=0.780  best=0.817  lr=4.0e-06
+[StageB.finetune] ep 36/60  train loss=0.193 acc=0.946  val acc=0.829  best=0.829  lr=3.7e-06
+[StageB.finetune] ep 37/60  train loss=0.150 acc=0.966  val acc=0.805  best=0.829  lr=3.5e-06
+[StageB.finetune] ep 38/60  train loss=0.145 acc=0.971  val acc=0.817  best=0.829  lr=3.2e-06
+[StageB.finetune] ep 39/60  train loss=0.161 acc=0.961  val acc=0.817  best=0.829  lr=3.0e-06
+[StageB.finetune] ep 40/60  train loss=0.156 acc=0.969  val acc=0.817  best=0.829  lr=2.7e-06
+[StageB.finetune] ep 41/60  train loss=0.160 acc=0.951  val acc=0.805  best=0.829  lr=2.5e-06
+[StageB.finetune] ep 42/60  train loss=0.153 acc=0.977  val acc=0.817  best=0.829  lr=2.3e-06
+[StageB.finetune] ep 43/60  train loss=0.142 acc=0.964  val acc=0.805  best=0.829  lr=2.1e-06
+[StageB.finetune] ep 44/60  train loss=0.162 acc=0.977  val acc=0.768  best=0.829  lr=1.9e-06
+[StageB.finetune] ep 45/60  train loss=0.150 acc=0.961  val acc=0.817  best=0.829  lr=1.7e-06
+[StageB.finetune] ep 46/60  train loss=0.176 acc=0.951  val acc=0.817  best=0.829  lr=1.5e-06
+[StageB.finetune] ep 47/60  train loss=0.144 acc=0.979  val acc=0.817  best=0.829  lr=1.3e-06
+[StageB.finetune] ep 48/60  train loss=0.135 acc=0.961  val acc=0.805  best=0.829  lr=1.1e-06
+[StageB.finetune] ep 49/60  train loss=0.152 acc=0.966  val acc=0.805  best=0.829  lr=9.5e-07
+[StageB.finetune] ep 50/60  train loss=0.159 acc=0.956  val acc=0.793  best=0.829  lr=8.1e-07
+[StageB.finetune] ep 51/60  train loss=0.138 acc=0.969  val acc=0.793  best=0.829  lr=6.7e-07
+[StageB.finetune] ep 52/60  train loss=0.104 acc=0.987  val acc=0.805  best=0.829  lr=5.4e-07
+[StageB.finetune] ep 53/60  train loss=0.167 acc=0.956  val acc=0.793  best=0.829  lr=4.3e-07
+[StageB.finetune] ep 54/60  train loss=0.123 acc=0.977  val acc=0.829  best=0.829  lr=3.3e-07
+[StageB.finetune] ep 55/60  train loss=0.149 acc=0.971  val acc=0.805  best=0.829  lr=2.4e-07
+[StageB.finetune] ep 56/60  train loss=0.122 acc=0.969  val acc=0.805  best=0.829  lr=1.7e-07
+[StageB.finetune] ep 57/60  train loss=0.140 acc=0.966  val acc=0.805  best=0.829  lr=1.1e-07
+[StageB.finetune] ep 58/60  train loss=0.120 acc=0.990  val acc=0.817  best=0.829  lr=6.2e-08
+[StageB.finetune] ep 59/60  train loss=0.200 acc=0.943  val acc=0.817  best=0.829  lr=2.7e-08
+[StageB.finetune] ep 60/60  train loss=0.134 acc=0.974  val acc=0.805  best=0.829  lr=6.9e-09
+
+[StageB] best val acc = 0.8293  ->  E:\Users\a\Desktop\数模\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\models\efficientnet_v2_s_480x240_seed1\two_stage\stage_b_low_med_high.pth
+
+Train log -> E:\Users\a\Desktop\数模\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\two_stage_train_log_efficientnet_v2_s_480x240_seed1.csv
+
+Total time: 27.5 min
+Summary | Stage A best val acc = 0.9538 | Stage B best val acc = 0.8293

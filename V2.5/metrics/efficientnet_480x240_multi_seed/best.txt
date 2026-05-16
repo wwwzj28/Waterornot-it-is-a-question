@@ -1,0 +1,7 @@
+best_seed=42
+run_name=480x240_seed42
+e2e_acc=0.8519
+q1_acc=0.9259
+q2_acc=0.8256
+macro_f1=0.814
+weighted_f1=0.851

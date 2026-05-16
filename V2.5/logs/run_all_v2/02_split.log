@@ -1,0 +1,21 @@
+[relabel] loaded 502 entries  (invalid=123, override=379)
+[relabel] skipped 123 samples marked invalid
+
+========== Dataset Split Summary ==========
+Total valid images: 874
+Errors / warnings : 0
+
+Overall split:
+  train: 609
+  val  : 130
+  test : 135
+
+Class distribution:
+  empty   total=321  train=224  val=48   test=49  
+  low     total=84   train=58   val=12   test=14  
+  medium  total=134  train=93   val=20   test=21  
+  high    total=335  train=234  val=50   test=51  
+===========================================
+
+Split list saved to : E:\Users\a\Desktop\��ģ\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\split_list.csv
+Split stats saved to: E:\Users\a\Desktop\��ģ\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\split_stats.csv
