@@ -1,0 +1,113 @@
+========== 02 split_dataset ==========
+$ D:\CondaData\envs\water-v2\python.exe scripts/02_split_dataset.py
+[relabel] loaded 502 entries  (invalid=117, override=385)
+[relabel] skipped 117 samples marked invalid
+
+========== Dataset Split Summary ==========
+Total valid images: 880
+Errors / warnings : 0
+
+Overall split:
+  train: 613
+  val  : 131
+  test : 136
+
+Class distribution:
+  empty   total=321  train=224  val=48   test=49  
+  low     total=87   train=60   val=13   test=14  
+  medium  total=137  train=95   val=20   test=22  
+  high    total=335  train=234  val=50   test=51  
+===========================================
+
+Split list saved to : E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\split_list.csv
+Split stats saved to: E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\split_stats.csv
+
+[02 split_dataset] exit=0  elapsed=0.3s  log=E:\Users\a\Desktop\��ģ\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\logs\run_all_v2\02_split.log
+
+========== 14 apply_relabel ==========
+$ D:\CondaData\envs\water-v2\python.exe scripts/14_apply_relabel.py
+=== Wrote v2 dataset to E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\data\resnet_cls_v2 ===
+train  | empty=224  low= 60  medium= 95  high=234  | total=613
+val    | empty= 48  low= 13  medium= 20  high= 50  | total=131
+test   | empty= 49  low= 14  medium= 22  high= 51  | total=136
+
+Total valid samples: 880
+Label sources: {'relabel': 385, 'json_fallback': 495}
+Skipped: {'invalid': 117}
+
+Wrote: E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\split_stats_v2.csv
+Wrote: E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\split_list_v2.csv
+
+[14 apply_relabel] exit=0  elapsed=6.6s  log=E:\Users\a\Desktop\��ģ\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\logs\run_all_v2\14_apply.log
+
+========== 15 train_two_stage ==========
+$ D:\CondaData\envs\water-v2\python.exe scripts/15_train_two_stage.py
+[StageB.finetune] ep 38/60  train loss=0.153 acc=0.969  val acc=0.747  best=0.759  lr=3.2e-06
+[StageB.finetune] ep 39/60  train loss=0.135 acc=0.964  val acc=0.735  best=0.759  lr=3.0e-06
+[StageB.finetune] ep 40/60  train loss=0.166 acc=0.943  val acc=0.711  best=0.759  lr=2.7e-06
+[StageB.finetune] ep 41/60  train loss=0.143 acc=0.961  val acc=0.747  best=0.759  lr=2.5e-06
+[StageB.finetune] ep 42/60  train loss=0.152 acc=0.951  val acc=0.759  best=0.759  lr=2.3e-06
+[StageB.finetune] ep 43/60  train loss=0.142 acc=0.969  val acc=0.723  best=0.759  lr=2.1e-06
+[StageB.finetune] ep 44/60  train loss=0.172 acc=0.954  val acc=0.747  best=0.759  lr=1.9e-06
+[StageB.finetune] ep 45/60  train loss=0.192 acc=0.931  val acc=0.759  best=0.759  lr=1.7e-06
+[StageB.finetune] ep 46/60  train loss=0.131 acc=0.977  val acc=0.759  best=0.759  lr=1.5e-06
+[StageB.finetune] ep 47/60  train loss=0.156 acc=0.951  val acc=0.759  best=0.759  lr=1.3e-06
+[StageB.finetune] ep 48/60  train loss=0.134 acc=0.961  val acc=0.747  best=0.759  lr=1.1e-06
+[StageB.finetune] ep 49/60  train loss=0.123 acc=0.959  val acc=0.723  best=0.759  lr=9.5e-07
+[StageB.finetune] ep 50/60  train loss=0.138 acc=0.964  val acc=0.735  best=0.759  lr=8.1e-07
+[StageB.finetune] ep 51/60  train loss=0.115 acc=0.974  val acc=0.723  best=0.759  lr=6.7e-07
+[StageB.finetune] ep 52/60  train loss=0.137 acc=0.959  val acc=0.723  best=0.759  lr=5.4e-07
+[StageB.finetune] ep 53/60  train loss=0.152 acc=0.943  val acc=0.735  best=0.759  lr=4.3e-07
+[StageB.finetune] ep 54/60  train loss=0.120 acc=0.969  val acc=0.711  best=0.759  lr=3.3e-07
+[StageB.finetune] ep 55/60  train loss=0.158 acc=0.943  val acc=0.747  best=0.759  lr=2.4e-07
+[StageB.finetune] ep 56/60  train loss=0.144 acc=0.967  val acc=0.735  best=0.759  lr=1.7e-07
+[StageB.finetune] ep 57/60  train loss=0.138 acc=0.967  val acc=0.711  best=0.759  lr=1.1e-07
+[StageB.finetune] ep 58/60  train loss=0.122 acc=0.974  val acc=0.735  best=0.759  lr=6.2e-08
+[StageB.finetune] ep 59/60  train loss=0.131 acc=0.959  val acc=0.711  best=0.759  lr=2.7e-08
+[StageB.finetune] ep 60/60  train loss=0.145 acc=0.954  val acc=0.723  best=0.759  lr=6.9e-09
+
+[StageB] best val acc = 0.7590  ->  E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\models\resnet\two_stage\stage_b_low_med_high.pth
+
+Train log -> E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\two_stage_train_log.csv
+
+Total time: 21.8 min
+Summary | Stage A best val acc = 0.9389 | Stage B best val acc = 0.7590
+
+[15 train_two_stage] exit=0  elapsed=1313.3s  log=E:\Users\a\Desktop\��ģ\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\logs\run_all_v2\15_train.log
+
+========== 16 eval_two_stage ==========
+$ D:\CondaData\envs\water-v2\python.exe scripts/16_eval_two_stage.py
+       empty      42        2        1        4
+         low       2        6        6        0
+      medium       0        1       18        3
+        high       2        0        6       43
+
+=== Q1 (empty vs not) test acc: 0.9191 ===
+[[42, 7], [4, 83]]
+
+=== Q2 (low/medium/high on true-non-empty subset) test acc: 0.7701 (67/87) ===
+Confusion incl. 'empty' (Stage A ?????? empty ?):
+                  low   medium     high    empty
+         low       6        6        0        2
+      medium       1       18        3        0
+        high       0        6       43        2
+
+=== Per-class report (4-class) ===
+              precision    recall  f1-score   support
+
+       empty      0.913     0.857     0.884        49
+         low      0.667     0.429     0.522        14
+      medium      0.581     0.818     0.679        22
+        high      0.860     0.843     0.851        51
+
+    accuracy                              0.801       136
+   macro avg      0.755     0.737     0.734       136
+weighted avg      0.814     0.801     0.801       136
+
+
+Saved report: E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\metrics\two_stage_test_report.txt
+Saved confusion matrix: E:\Users\a\Desktop\???\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\figures\two_stage_confusion_matrix.png
+
+[16 eval_two_stage] exit=0  elapsed=9.2s  log=E:\Users\a\Desktop\��ģ\Waterornot-it-is-a-question-main\Waterornot-it-is-a-question-main\outputs\logs\run_all_v2\16_eval.log
+
+All done.

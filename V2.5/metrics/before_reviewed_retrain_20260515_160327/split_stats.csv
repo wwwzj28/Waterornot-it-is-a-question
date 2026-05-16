@@ -1,0 +1,5 @@
+﻿label,train,val,test,total
+empty,224,48,49,321
+low,60,13,14,87
+medium,95,20,22,137
+high,234,50,51,335

@@ -1,0 +1,4 @@
+Non-final experiments are preserved in outputs/metrics/, outputs/figures/, and models/.
+The final paper-ready artifacts are collected under final/.
+Selected final method: EfficientNetV2-S 480x240 hybrid two-stage model.
+Stage A uses seed 2026; Stage B uses seed 42.

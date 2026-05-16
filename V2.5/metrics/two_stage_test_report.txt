@@ -1,0 +1,17 @@
+﻿Final model: EfficientNetV2-S 480x240 hybrid two-stage
+Stage A: seed 2026, empty vs non-empty
+Stage B: seed 42, low / medium / high
+End-to-end 4-class test acc: 0.8593
+Q1 (empty vs not) test acc:  0.9407
+Q2 (low/med/high on true-nonempty) test acc: 0.8256
+
+              precision    recall  f1-score   support
+
+       empty      0.918     0.918     0.918        49
+         low      0.750     0.643     0.692        14
+      medium      0.773     0.810     0.791        21
+        high      0.865     0.882     0.874        51
+
+    accuracy                              0.859       135
+   macro avg      0.827     0.813     0.819       135
+weighted avg      0.858     0.859     0.858       135

@@ -1,0 +1,4 @@
+Archived from background task b1rn0rbz8.output.
+This run used 880 valid samples before the final 6 invalid exclusions.
+Model weights were not preserved before later experiments overwrote models/resnet/two_stage/*.pth.
+Use this archive as a metric/log reference, not as a restorable model checkpoint.

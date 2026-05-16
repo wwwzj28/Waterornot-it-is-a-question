@@ -1,0 +1,14 @@
+﻿End-to-end 4-class test acc: 0.8222
+Q1 (empty vs not) test acc:  0.9407
+Q2 (low/med/high on true-nonempty) test acc: 0.7791
+
+              precision    recall  f1-score   support
+
+       empty      0.936     0.898     0.917        49
+         low      0.750     0.214     0.333        14
+      medium      0.581     0.857     0.692        21
+        high      0.868     0.902     0.885        51
+
+    accuracy                              0.822       135
+   macro avg      0.784     0.718     0.707       135
+weighted avg      0.836     0.822     0.809       135

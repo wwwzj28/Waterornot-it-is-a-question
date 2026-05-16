@@ -1,0 +1,23 @@
+Final selected solution
+=======================
+
+Method: EfficientNetV2-S 480x240 hybrid two-stage model.
+Stage A: seed 2026, empty vs non-empty.
+Stage B: seed 42, low / medium / high.
+
+Final metrics:
+- End-to-end 4-class accuracy: 0.8593
+- Q1 empty vs non-empty accuracy: 0.9407
+- Q2 low/medium/high accuracy: 0.8256
+- Macro F1: 0.819
+- Weighted F1: 0.858
+
+Important files:
+- final/models/efficientnet_v2_s_480x240_hybrid/
+- final/outputs/metrics/final_test_report.txt
+- final/outputs/metrics/final_test_predictions.csv
+- final/outputs/figures/final_confusion_matrix.png
+- final/outputs/figures/final_pipeline_flow.png
+- final/outputs/figures/final_model_architecture.png
+- final/data/final_split_list_v2.csv
+- final/data/relabel.csv
